@@ -1,0 +1,20 @@
+{
+  "name": "file-manager",
+  "version": "1.0.0",
+  "description": "CLI file manager",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node ./src/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ryabykhms/file-manager.git"
+  },
+  "author": "Maxim Ryabykh (@ryabykhms)",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ryabykhms/file-manager/issues"
+  },
+  "homepage": "https://github.com/ryabykhms/file-manager#readme"
+}
