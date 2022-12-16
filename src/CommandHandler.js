@@ -9,17 +9,18 @@ export class CommandHandler {
     [".exit", (currentPath, args) => exitCommandHandler.handle(currentPath, args)],
     ["cd", (currentPath, args) => fsCommandHandler.handleCd(currentPath, args)],
     ["up", (currentPath, args) => fsCommandHandler.handleUp(currentPath, args)],
+    ["ls", (currentPath, args) => fsCommandHandler.handleLs(currentPath, args)],
   ]);
 
-  handle(currentPath, command, args) {
+  async handle(currentPath, command, args) {
     const handleCommand = this._commands.get(command);
 
     if (!handleCommand) {
       return { path: currentPath, output: "" };
     }
 
-    const { path, output } = handleCommand(currentPath, args);
+    const { path, output } = await handleCommand(currentPath, args);
 
-    return { path, output };
+    return Promise.resolve({ path, output });
   }
 }

@@ -1,4 +1,5 @@
 import { join, parse } from "path";
+import { readdir } from "fs/promises";
 
 export class FsCommandHandler {
   handleCd(currentPath, args) {
@@ -11,6 +12,30 @@ export class FsCommandHandler {
     const path = this._isRootPath(currentPath) ? currentPath : join(currentPath, "..");
 
     return { path, output: "" };
+  }
+
+  async handleLs(currentPath) {
+    const dirEntries = await readdir(currentPath, { withFileTypes: true });
+    const entries = dirEntries
+      .sort(this._sortDirEntries.bind(this))
+      .map((dirEntry) => ({ Name: dirEntry.name, Type: this._getTypeOfDirEntry(dirEntry) }));
+
+    console.table(entries);
+
+    return Promise.resolve({ path: currentPath, output: "" });
+  }
+
+  _getTypeOfDirEntry(dirEntry) {
+    return dirEntry.isDirectory() ? "directory" : "file";
+  }
+
+  _sortDirEntries(dirEntryLeft, dirEntryRight) {
+    const sortByType =
+      dirEntryLeft.isDirectory() === dirEntryRight.isDirectory() ? 0 : dirEntryLeft.isDirectory() ? -1 : 1;
+
+    const sortByName = dirEntryLeft.name.localeCompare(dirEntryRight.name);
+
+    return sortByType || sortByName;
   }
 
   _isRootPath(currentPath) {

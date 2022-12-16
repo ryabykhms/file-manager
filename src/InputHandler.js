@@ -5,11 +5,11 @@ export class InputHandler {
     this._commandHandler = commandHandler;
   }
 
-  handle(currentPath, input) {
+  async handle(currentPath, input) {
     const { command, args } = this._parseInput(input);
-    const { path, output } = this._commandHandler.handle(currentPath, command, args);
+    const { path, output } = await this._commandHandler.handle(currentPath, command, args);
     const message = `You are currently in ${path}`;
-    return { path, output: `${output}\n${message}\n` };
+    return Promise.resolve({ path, output: `${output}\n${message}\n` });
   }
 
   _parseInput(input) {

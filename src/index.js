@@ -27,10 +27,10 @@ const main = async () => {
   console.log(`You are currently in ${currentPath}\n`);
 
   const streamTransform = new Transform({
-    transform: (chunk, encoding, callback) => {
+    transform: async (chunk, encoding, callback) => {
       const chunkString = chunk.toString().trim();
 
-      const { path, output } = inputHandler.handle(currentPath, chunkString);
+      const { path, output } = await inputHandler.handle(currentPath, chunkString);
       currentPath = path;
 
       callback(null, output);
