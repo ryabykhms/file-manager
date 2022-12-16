@@ -1,8 +1,10 @@
 import { ExitCommandHandler } from "./handlers/ExitCommandHandler.js";
 import { FsCommandHandler } from "./handlers/FsCommandHandler.js";
+import { OsCommandHandler } from "./handlers/OsCommandHandler.js";
 
 const fsCommandHandler = new FsCommandHandler();
 const exitCommandHandler = new ExitCommandHandler();
+const osCommandHandler = new OsCommandHandler();
 
 export class CommandHandler {
   _commands = new Map([
@@ -10,6 +12,7 @@ export class CommandHandler {
     ["cd", (currentPath, args) => fsCommandHandler.handleCd(currentPath, args)],
     ["up", (currentPath, args) => fsCommandHandler.handleUp(currentPath, args)],
     ["ls", (currentPath, args) => fsCommandHandler.handleLs(currentPath, args)],
+    ["os", (currentPath, args) => osCommandHandler.handle(currentPath, args)],
   ]);
 
   async handle(currentPath, command, args) {

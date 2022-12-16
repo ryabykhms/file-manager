@@ -14,7 +14,7 @@ export class InputHandler {
 
   _parseInput(input) {
     const splittedInput = input.split(/\s/);
-    const command = splittedInput.shift();
+    const command = splittedInput.shift()?.toLowerCase();
     const args = splittedInput;
 
     return { command, args };
