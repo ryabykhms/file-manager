@@ -1,13 +1,30 @@
+import { createReadStream } from "fs";
 import { readdir } from "fs/promises";
 import { isAbsolute, join, parse } from "path";
+import { finished as streamFinished } from "stream";
+import { promisify } from "util";
+
+const finished = promisify(streamFinished);
 
 export class FsCommandHandler {
   handleCd(currentPath, args) {
-    const arg = args?.[0];
+    const [arg] = args;
 
     const path = isAbsolute(arg) ? arg : join(currentPath, arg);
 
     return { path, output: "" };
+  }
+
+  async handleCat(currentPath, args) {
+    const [pathToFile] = args;
+
+    const path = isAbsolute(pathToFile) ? pathToFile : join(currentPath, pathToFile);
+
+    const readableStream = createReadStream(path);
+    readableStream.pipe(process.stdout);
+    await finished(readableStream);
+
+    return { path: currentPath, output: "" };
   }
 
   handleUp(currentPath) {
