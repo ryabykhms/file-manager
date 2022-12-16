@@ -1,11 +1,13 @@
-import { join, parse } from "path";
 import { readdir } from "fs/promises";
+import { isAbsolute, join, parse } from "path";
 
 export class FsCommandHandler {
   handleCd(currentPath, args) {
-    const { path, output } = { path: currentPath, output: "" };
+    const arg = args?.[0];
 
-    return { path, output };
+    const path = isAbsolute(arg) ? arg : join(currentPath, arg);
+
+    return { path, output: "" };
   }
 
   handleUp(currentPath) {
