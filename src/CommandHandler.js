@@ -8,6 +8,7 @@ export class CommandHandler {
   _commands = new Map([
     [".exit", (currentPath, args) => exitCommandHandler.handle(currentPath, args)],
     ["cd", (currentPath, args) => fsCommandHandler.handleCd(currentPath, args)],
+    ["up", (currentPath, args) => fsCommandHandler.handleUp(currentPath, args)],
   ]);
 
   handle(currentPath, command, args) {
