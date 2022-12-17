@@ -18,6 +18,7 @@ export class CommandHandler {
     ["rn", (currentPath, args) => fsCommandHandler.handleRn(currentPath, args)],
     ["cp", (currentPath, args) => fsCommandHandler.handleCp(currentPath, args)],
     ["mv", (currentPath, args) => fsCommandHandler.handleMv(currentPath, args)],
+    ["rm", (currentPath, args) => fsCommandHandler.handleRm(currentPath, args)],
   ]);
 
   async handle(currentPath, command, args) {

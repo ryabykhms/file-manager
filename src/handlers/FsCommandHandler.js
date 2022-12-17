@@ -75,6 +75,14 @@ export class FsCommandHandler {
     return { path: currentPath, output: "" };
   }
 
+  async handleRm(currentPath, args) {
+    const [pathToFile] = args;
+
+    await rm(pathToFile);
+
+    return { path: currentPath, output: "" };
+  }
+
   handleUp(currentPath) {
     const path = this._isRootPath(currentPath) ? currentPath : join(currentPath, "..");
 
