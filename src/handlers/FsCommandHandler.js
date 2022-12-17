@@ -100,6 +100,18 @@ export class FsCommandHandler {
     return Promise.resolve({ path: currentPath, output: "" });
   }
 
+  async handleHash(currentPath, args) {
+    const [pathToFile] = args;
+    const hasher = createHash("sha256");
+    const readableStream = createReadStream(pathToFile);
+    readableStream.pipe(hasher);
+    await finished(readableStream);
+    const hash = hasher.digest("hex");
+    console.log(hash);
+
+    return { path: currentPath, output: "" };
+  }
+
   _getTypeOfDirEntry(dirEntry) {
     return dirEntry.isDirectory() ? "directory" : "file";
   }
