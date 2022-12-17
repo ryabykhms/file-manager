@@ -112,6 +112,16 @@ export class FsCommandHandler {
     return { path: currentPath, output: "" };
   }
 
+  async handleCompress(currentPath, args) {
+    const [pathToFile, pathToDestination] = args;
+    const readableStream = createReadStream(pathToFile);
+    const writableStream = createWriteStream(pathToDestination);
+    const brotli = createBrotliCompress();
+    readableStream.pipe(brotli).pipe(writableStream);
+
+    return { path: currentPath, output: "" };
+  }
+
   _getTypeOfDirEntry(dirEntry) {
     return dirEntry.isDirectory() ? "directory" : "file";
   }
