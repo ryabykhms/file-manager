@@ -3,6 +3,8 @@ import { readdir, writeFile, rename, rm } from "fs/promises";
 import { isAbsolute, join, parse, dirname, basename } from "path";
 import { finished as streamFinished } from "stream";
 import { promisify } from "util";
+import { createHash } from "crypto";
+import { createBrotliCompress, createBrotliDecompress } from "zlib";
 
 const finished = promisify(streamFinished);
 
@@ -60,6 +62,15 @@ export class FsCommandHandler {
 
     readableStream.pipe(writableStream);
     await finished(readableStream);
+
+    return { path: currentPath, output: "" };
+  }
+
+  async handleMv(currentPath, args) {
+    const [pathToFile] = args;
+
+    await this.handleCp(currentPath, args);
+    await rm(pathToFile);
 
     return { path: currentPath, output: "" };
   }
