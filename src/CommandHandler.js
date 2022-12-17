@@ -8,31 +8,24 @@ const osCommandHandler = new OsCommandHandler();
 
 export class CommandHandler {
   _commands = new Map([
-    [".exit", (currentPath, args) => exitCommandHandler.handle(currentPath, args)],
-    ["cd", (currentPath, args) => fsCommandHandler.handleCd(currentPath, args)],
-    ["up", (currentPath, args) => fsCommandHandler.handleUp(currentPath, args)],
-    ["ls", (currentPath, args) => fsCommandHandler.handleLs(currentPath, args)],
-    ["os", (currentPath, args) => osCommandHandler.handle(currentPath, args)],
-    ["cat", (currentPath, args) => fsCommandHandler.handleCat(currentPath, args)],
-    ["add", (currentPath, args) => fsCommandHandler.handleAdd(currentPath, args)],
-    ["rn", (currentPath, args) => fsCommandHandler.handleRn(currentPath, args)],
-    ["cp", (currentPath, args) => fsCommandHandler.handleCp(currentPath, args)],
-    ["mv", (currentPath, args) => fsCommandHandler.handleMv(currentPath, args)],
-    ["rm", (currentPath, args) => fsCommandHandler.handleRm(currentPath, args)],
-    ["hash", (currentPath, args) => fsCommandHandler.handleHash(currentPath, args)],
-    ["compress", (currentPath, args) => fsCommandHandler.handleCompress(currentPath, args)],
-    ["decompress", (currentPath, args) => fsCommandHandler.handleDecompress(currentPath, args)],
+    [".exit", (args) => exitCommandHandler.handle(args)],
+    ["cd", (args) => fsCommandHandler.handleCd(args)],
+    ["up", (args) => fsCommandHandler.handleUp(args)],
+    ["ls", (args) => fsCommandHandler.handleLs(args)],
+    ["os", (args) => osCommandHandler.handle(args)],
+    ["cat", (args) => fsCommandHandler.handleCat(args)],
+    ["add", (args) => fsCommandHandler.handleAdd(args)],
+    ["rn", (args) => fsCommandHandler.handleRn(args)],
+    ["cp", (args) => fsCommandHandler.handleCp(args)],
+    ["mv", (args) => fsCommandHandler.handleMv(args)],
+    ["rm", (args) => fsCommandHandler.handleRm(args)],
+    ["hash", (args) => fsCommandHandler.handleHash(args)],
+    ["compress", (args) => fsCommandHandler.handleCompress(args)],
+    ["decompress", (args) => fsCommandHandler.handleDecompress(args)],
   ]);
 
-  async handle(currentPath, command, args) {
+  async handle(command, args) {
     const handleCommand = this._commands.get(command);
-
-    if (!handleCommand) {
-      return { path: currentPath, output: "" };
-    }
-
-    const { path, output } = await handleCommand(currentPath, args);
-
-    return Promise.resolve({ path, output });
+    await handleCommand?.(args);
   }
 }

@@ -9,11 +9,9 @@ export class OsCommandHandler {
     ["architecture", () => arch()],
   ]);
 
-  handle(currentPath, args) {
+  handle(args) {
     const arg = args?.[0]?.slice(2)?.toLowerCase();
     console.log(this._commands.get(arg)?.());
-
-    return { path: currentPath, output: "" };
   }
 
   _handleEol() {
