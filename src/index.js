@@ -1,8 +1,7 @@
-import { Transform } from "stream";
-import { pipeline } from "stream/promises";
-import { InputHandler } from "./InputHandler.js";
-import { CommandHandler } from "./CommandHandler.js";
 import { homedir } from "os";
+import { createInterface } from "readline";
+import { CommandHandler } from "./CommandHandler.js";
+import { InputHandler } from "./InputHandler.js";
 
 const getUsernameFromArgs = (args) => {
   const usefulArgs = args.slice(2);
@@ -17,32 +16,33 @@ const getUsernameFromArgs = (args) => {
   return username;
 };
 
+const handleExit = (username) => {
+  console.log(`Thank you for using File Manager, ${username}, goodbye!`);
+  process.exit(0);
+};
+
 const main = async () => {
   const commandHandler = new CommandHandler();
   const inputHandler = new InputHandler(commandHandler);
-  let currentPath = homedir();
 
+  let currentPath = homedir();
   const username = getUsernameFromArgs(process.argv);
   console.log(`Welcome to the File Manager, ${username}!\n`);
   console.log(`You are currently in ${currentPath}\n`);
 
-  const streamTransform = new Transform({
-    transform: async (chunk, encoding, callback) => {
-      const chunkString = chunk.toString().trim();
-
-      const { path, output } = await inputHandler.handle(currentPath, chunkString);
-      currentPath = path;
-
-      callback(null, output);
-    },
+  const readline = createInterface({
+    input: process.stdin,
+    output: process.stdout,
   });
 
-  process.on("SIGINT", function () {
-    console.log(`Thank you for using File Manager, ${username}, goodbye!`);
-    process.exit(0);
+  readline.on("line", async (line) => {
+    const { path, output } = await inputHandler.handle(currentPath, line);
+    currentPath = path;
+    console.log(output);
   });
 
-  await pipeline(process.stdin, streamTransform, process.stdout);
+  readline.on("SIGINT", () => handleExit(username));
+  process.on("SIGINT", () => handleExit(username));
 };
 
 main();
