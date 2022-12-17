@@ -21,6 +21,7 @@ export class CommandHandler {
     ["rm", (currentPath, args) => fsCommandHandler.handleRm(currentPath, args)],
     ["hash", (currentPath, args) => fsCommandHandler.handleHash(currentPath, args)],
     ["compress", (currentPath, args) => fsCommandHandler.handleCompress(currentPath, args)],
+    ["decompress", (currentPath, args) => fsCommandHandler.handleDecompress(currentPath, args)],
   ]);
 
   async handle(currentPath, command, args) {
