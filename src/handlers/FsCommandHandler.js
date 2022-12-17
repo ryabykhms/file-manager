@@ -1,6 +1,6 @@
-import { createReadStream } from "fs";
-import { readdir, writeFile, rename } from "fs/promises";
-import { isAbsolute, join, parse, dirname } from "path";
+import { createReadStream, createWriteStream } from "fs";
+import { readdir, writeFile, rename, rm } from "fs/promises";
+import { isAbsolute, join, parse, dirname, basename } from "path";
 import { finished as streamFinished } from "stream";
 import { promisify } from "util";
 
@@ -42,6 +42,24 @@ export class FsCommandHandler {
     const dir = dirname(pathToFile);
     const newPath = join(dir, newFilename);
     await rename(pathToFile, newPath);
+
+    return { path: currentPath, output: "" };
+  }
+
+  async handleCp(currentPath, args) {
+    const [pathToFile, pathToNewDirectory] = args;
+
+    const name = basename(pathToFile);
+    const newPath = join(pathToNewDirectory, name);
+
+    const writableStream = createWriteStream(newPath);
+
+    const readableStream = createReadStream(pathToFile, {
+      encoding: "utf8",
+    });
+
+    readableStream.pipe(writableStream);
+    await finished(readableStream);
 
     return { path: currentPath, output: "" };
   }
