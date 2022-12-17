@@ -14,6 +14,7 @@ export class CommandHandler {
     ["ls", (currentPath, args) => fsCommandHandler.handleLs(currentPath, args)],
     ["os", (currentPath, args) => osCommandHandler.handle(currentPath, args)],
     ["cat", (currentPath, args) => fsCommandHandler.handleCat(currentPath, args)],
+    ["add", (currentPath, args) => fsCommandHandler.handleAdd(currentPath, args)],
   ]);
 
   async handle(currentPath, command, args) {

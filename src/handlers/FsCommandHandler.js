@@ -1,5 +1,5 @@
 import { createReadStream } from "fs";
-import { readdir } from "fs/promises";
+import { readdir, writeFile } from "fs/promises";
 import { isAbsolute, join, parse } from "path";
 import { finished as streamFinished } from "stream";
 import { promisify } from "util";
@@ -23,6 +23,15 @@ export class FsCommandHandler {
     const readableStream = createReadStream(path);
     readableStream.pipe(process.stdout);
     await finished(readableStream);
+
+    return { path: currentPath, output: "" };
+  }
+
+  async handleAdd(currentPath, args) {
+    const [fileName] = args;
+
+    const path = join(currentPath, fileName);
+    await writeFile(path, "", { flag: "wx" });
 
     return { path: currentPath, output: "" };
   }
