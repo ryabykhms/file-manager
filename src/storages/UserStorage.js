@@ -1,6 +1,6 @@
 class UserStorage {
   constructor() {
-    this._username = this._getInitial();
+    this._init();
   }
 
   setUsername(username) {
@@ -11,7 +11,7 @@ class UserStorage {
     return this._username;
   }
 
-  _getInitial = () => {
+  _init = () => {
     const usefulArgs = process.argv.slice(2);
     const usernameArg = usefulArgs.find((arg) => arg.startsWith("--username="));
 
@@ -19,9 +19,7 @@ class UserStorage {
       throw new Error("Please enter username like --username=Vasya");
     }
 
-    const username = usernameArg.split("--username=")[1];
-
-    return username;
+    this._username = usernameArg.split("--username=")[1];
   };
 }
 

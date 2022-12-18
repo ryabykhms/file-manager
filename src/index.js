@@ -1,6 +1,6 @@
 import { createInterface } from "readline";
-import { CommandHandler } from "./CommandHandler.js";
-import { InputHandler } from "./InputHandler.js";
+import { CommandHandler } from "./handlers/CommandHandler.js";
+import { InputHandler } from "./handlers/InputHandler.js";
 import { pathStorage } from "./storages/PathStorage.js";
 import { userStorage } from "./storages/UserStorage.js";
 
