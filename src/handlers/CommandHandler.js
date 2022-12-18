@@ -3,6 +3,7 @@ import { hash } from "../commands/crypto/index.js";
 import { add, changeDirectory, copy, list, move, print, remove, rename, up } from "../commands/fileSystem/index.js";
 import { printInfo } from "../commands/operationSystem/index.js";
 import { exit } from "../commands/process/index.js";
+import { InvalidInputError } from "../errors/InvalidInputError.js";
 
 export class CommandHandler {
   _commands = new Map([
@@ -24,6 +25,11 @@ export class CommandHandler {
 
   async handle(command, args) {
     const handleCommand = this._commands.get(command);
+
+    if (!handleCommand) {
+      throw new InvalidInputError();
+    }
+
     await handleCommand?.(args);
   }
 }

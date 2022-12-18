@@ -5,7 +5,7 @@ const isRootPath = (currentPath) => {
   return currentPath === parse(currentPath).root;
 };
 
-export const up = () => {
+export const up = async () => {
   const path = isRootPath(pathStorage.get()) ? pathStorage.get() : join(pathStorage.get(), "..");
-  pathStorage.set(path);
+  await pathStorage.set(path);
 };

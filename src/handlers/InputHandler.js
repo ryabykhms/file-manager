@@ -1,3 +1,5 @@
+import { InvalidInputError } from "../errors/InvalidInputError.js";
+
 export class InputHandler {
   _commandHandler;
 
@@ -6,8 +8,12 @@ export class InputHandler {
   }
 
   async handle(input) {
-    const { command, args } = this._parseInput(input);
-    await this._commandHandler.handle(command, args);
+    try {
+      const { command, args } = this._parseInput(input);
+      await this._commandHandler.handle(command, args);
+    } catch (e) {
+      console.log(e instanceof InvalidInputError ? e.message : "Operation failed");
+    }
   }
 
   _parseInput(input) {
